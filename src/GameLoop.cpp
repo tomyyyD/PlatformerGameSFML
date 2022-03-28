@@ -21,7 +21,7 @@ GameLoop::GameLoop()
 
 	sf::RectangleShape rect1;
 	sf::Vector2f rect1Size(200.f, 50.0f);
-	rect1.setPosition(0, 0);
+	rect1.setPosition((window.getSize().x / 2) - 100.0f, (window.getSize().y / 2) - 25.0f);
 	rect1.setSize(rect1Size);
 
 	walls[0] = rect1;
@@ -63,9 +63,11 @@ void GameLoop::checkWalls()
 			if (circleRectCollisionCheck(gameObjects[i].px, gameObjects[i].py, gameObjects[i].radius, walls[j].getPosition().x, walls[j].getPosition().y, wallSize.x, wallSize.y))
 			{
 				gameObjects[i].isColliding = true;
-				std::cout << "Collision" << std::endl;
 			}
-			gameObjects[i].isColliding = false;
+			else
+			{
+				gameObjects[i].isColliding = false;
+			}
 		}
 	}
 }
@@ -111,7 +113,7 @@ void GameLoop::update(sf::Time deltaTime)
 		}
 		else
 		{
-			gameObjects[i].fy = -9.81;
+			gameObjects[i].fy = 9.81f;
 			gameObjects[i].update(deltaTime);
 		}
 	}
@@ -129,10 +131,6 @@ void GameLoop::render()
 	{
 		window.draw(walls[i]);
 	}
-	boundsBox.setOutlineColor(sf::Color::Green);
-	boundsBox.setOutlineThickness(5.0f);
-	boundsBox.setFillColor(sf::Color::Black);
-	window.draw(boundsBox);
 	window.display();
 }
 
@@ -172,9 +170,9 @@ void GameLoop::handleMouseInput(sf::Mouse::Button button, bool isPressed)
 	}
 }
 
-bool GameLoop::circleRectCollisionCheck(float px1, float py1, float radius, float px2, float py2, float width, float height)
+bool GameLoop::circleRectCollisionCheck(float cx, float cy, float radius, float rx, float ry, float width, float height)
 {
-	if (px2 - radius < px1 && px1 < px2 + radius + height && py2 - radius < py1 && py1 < py2 + radius + width)
+	if (rx - radius < cx && rx + radius + width > cx && ry - radius < cy && ry + radius + height > cy)
 		return true;
 	return false;
 }

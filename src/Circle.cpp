@@ -14,7 +14,7 @@ Circle::Circle(float startX, float startY, float radiusInput, float massInput)
 	shape.setRadius(radiusInput);
 	shape.setOrigin(radiusInput, radiusInput);
 	shape.setPosition(startX, startY);
-
+	radius = radiusInput;
 	mass = massInput;
 	px = startX;
 	py = startY;
