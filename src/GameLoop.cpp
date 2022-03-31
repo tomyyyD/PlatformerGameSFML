@@ -79,12 +79,12 @@ void GameLoop::processEvents()
 	{
 		switch (event.type)
 		{
-			// case sf::Event::KeyPressed:
-			// 	handlePlayerInput(event.key.code, true);
-			// 	break;
-			// case sf::Event::KeyReleased:
-			// 	handlePlayerInput(event.key.code, false);
-			// 	break;
+			case sf::Event::KeyPressed:
+				handlePlayerInput(event.key.code, true);
+				break;
+			case sf::Event::KeyReleased:
+				handlePlayerInput(event.key.code, false);
+				break;
 			case sf::Event::MouseButtonPressed:
 				handleMouseInput(event.mouseButton.button, true);
 				break;
@@ -134,30 +134,13 @@ void GameLoop::render()
 	window.display();
 }
 
-// void GameLoop::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
-// {
-// 		if (key == sf::Keyboard::Left && isPressed)
-// 	{
-// 		vx = -10;
-// 	}
-// 	else if (key == sf::Keyboard::Right)
-// 	{
-// 		vx = 10;
-// 	}
-// 	else if (key == sf::Keyboard::Up)
-// 	{
-// 		vy = -10;
-// 	}
-// 	else if (key == sf::Keyboard::Down)
-// 	{
-// 		vy = 10;
-// 	}
-// 	else if (!isPressed)
-// 	{
-// 		vx = 0;
-// 		vy = 0;
-// 	}
-// }
+void GameLoop::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
+{
+	if (key == sf::Keyboard::Space && isPressed)
+	{
+		gameObjects[0].fy = -9;
+	}
+}
 
 void GameLoop::handleMouseInput(sf::Mouse::Button button, bool isPressed)
 {
