@@ -18,6 +18,7 @@ private:
 	void handleMouseInput(sf::Mouse::Button button, bool isPressed);
 	void checkWalls();
 	bool circleRectCollisionCheck(float px, float py, float radius, float px1, float px2, float width, float height);
+	void applyNonConservativeForce();
 
 	sf::RenderWindow window;
 	static const sf::Time TimePerFrame;

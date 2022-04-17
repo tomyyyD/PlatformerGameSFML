@@ -12,6 +12,8 @@ public:
 	void update(sf::Time deltaTime);
 	sf::CircleShape shape;
 	bool isColliding;
+	bool canJump;
+	float collisionDepth;
 	float radius;
 	float mass;
 	float fx;

@@ -30,8 +30,6 @@ GameLoop::GameLoop()
 
 void GameLoop::Run()
 {
-
-	std::cout << "starting game" << std::endl;
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
@@ -62,6 +60,7 @@ void GameLoop::checkWalls()
 			boundsBox.setSize(wallSize);
 			if (circleRectCollisionCheck(gameObjects[i].px, gameObjects[i].py, gameObjects[i].radius, walls[j].getPosition().x, walls[j].getPosition().y, wallSize.x, wallSize.y))
 			{
+				gameObjects[i].collisionDepth = (gameObjects[i].py + gameObjects[i].radius) - walls[j].getPosition().y;
 				gameObjects[i].isColliding = true;
 			}
 			else
@@ -106,16 +105,20 @@ void GameLoop::update(sf::Time deltaTime)
 	{
 		if (gameObjects[i].isColliding)
 		{
-			gameObjects[i].fx = 0;
-			gameObjects[i].fy = 0;
-			gameObjects[i].vx = 0;
-			gameObjects[i].vy = 0;
+			gameObjects[i].canJump = true;
+			gameObjects[i].fy += gameObjects[i].mass * -gameObjects[i].vy / deltaTime.asSeconds();
+			if (gameObjects[i].collisionDepth > 1)
+			{
+				gameObjects[i].py -= gameObjects[i].collisionDepth;
+			}
 		}
 		else
 		{
-			gameObjects[i].fy = 9.81f;
-			gameObjects[i].update(deltaTime);
+			gameObjects[i].fy += 200.f * gameObjects[i].mass;
 		}
+		gameObjects[i].update(deltaTime);
+		gameObjects[i].fy = 0;
+		gameObjects[i].fx = 0;
 	}
 }
 
@@ -136,9 +139,18 @@ void GameLoop::render()
 
 void GameLoop::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	if (key == sf::Keyboard::Space && isPressed)
+	if (key == sf::Keyboard::Space && isPressed && gameObjects[0].canJump)
 	{
-		gameObjects[0].fy = -9;
+		gameObjects[0].fy += -100000;
+		gameObjects[0].canJump = false;
+	}
+	if (key == sf::Keyboard::A && isPressed)
+	{
+		gameObjects[0].fx += -800;
+	}
+	if (key == sf::Keyboard::D && isPressed)
+	{
+		gameObjects[0].fx += 800;
 	}
 }
 
@@ -156,6 +168,8 @@ void GameLoop::handleMouseInput(sf::Mouse::Button button, bool isPressed)
 bool GameLoop::circleRectCollisionCheck(float cx, float cy, float radius, float rx, float ry, float width, float height)
 {
 	if (rx - radius < cx && rx + radius + width > cx && ry - radius < cy && ry + radius + height > cy)
+	{
 		return true;
+	}
 	return false;
 }
