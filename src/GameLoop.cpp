@@ -114,7 +114,7 @@ void GameLoop::update(sf::Time deltaTime)
 		}
 		else
 		{
-			gameObjects[i].fy += 200.f * gameObjects[i].mass;
+			gameObjects[i].fy += gameObjects[i].GRAVITY * gameObjects[i].mass;
 		}
 		gameObjects[i].update(deltaTime);
 		gameObjects[i].fy = 0;

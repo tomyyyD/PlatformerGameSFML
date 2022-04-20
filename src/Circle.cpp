@@ -30,9 +30,13 @@ void Circle::update(sf::Time deltaTime)
 	float dt = deltaTime.asSeconds();
 
 	//applies nonconservative forces
-	//force of friction
+	//air resistance forces
 	float airResX = 0.5 * vx * vx;
 	float airResY = 0.1 * vy * vy;
+
+	//friction
+	float frictionalConstant = 0.4;
+	float friction = frictionalConstant * mass * GRAVITY;
 
 	if (vy > 0)
 		fy -= airResY;

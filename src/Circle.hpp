@@ -24,6 +24,7 @@ public:
 	float vy;
 	float px;
 	float py;
+	float const GRAVITY = 200.f
 };
 
 #endif
